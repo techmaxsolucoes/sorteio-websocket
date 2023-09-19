@@ -2,7 +2,7 @@ FROM node:current-alpine
 
 COPY src /data/app/
 
-WORKDIR /data/src
+WORKDIR /data/app
 
 RUN yarn install
 
