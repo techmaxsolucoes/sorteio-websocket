@@ -1,4 +1,4 @@
-const WS_URL = "ws://localhost:3000/ws";
+const WS_URL = "ws://sorteio.tmx.tec.br:3000/ws";
 
 const STATUS = {
   WIN: "youwin",

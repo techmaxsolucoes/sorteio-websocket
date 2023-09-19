@@ -86,7 +86,7 @@ function handleDraw(toDraw) {
     (client) => !client.isAdmin
   ), winners = [];
   
-  while (winners.length < toDraw){
+  while (winners.length < toDraw && winners.length <= participants.length){
     winners.push(
       participants[Math.floor(Math.random() * participants.length)].app_code
     );
