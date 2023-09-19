@@ -4,7 +4,7 @@ const WebSocket = require("ws");
 
 const app = express();
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server, path: '/ws'});
 
 const APP_PORT = process.env.PORT || 3000;
 const APP_URL = process.env.URL || `http://localhost:${APP_PORT}`;
@@ -20,17 +20,44 @@ app.get("/", (req, res) => res.sendFile(__dirname + "/public/index.html"));
 app.get("/admin", (req, res) => res.sendFile(__dirname + "/public/admin.html"));
 
 server.listen(APP_PORT, () =>
-  console.log(`Servidor ouvindo a porta ${APP_PORT}!`)
+  console.log(`Servidor ouvindo no host ${APP_URL}!`)
 );
 
 let clients = [];
+let clientCodes = [];
 
-wss.on("connection", (ws) => {
+function generateCode(length) {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let result = "";
+
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return result;
+}
+
+wss.on("connection", (ws, req) => {
+  ws.app_code = generateCode(4);
+  ws.app_ts = new Date();
+
   clients.push(ws);
+  clientCodes.push([{
+    address: req.socket.remoteAddress,
+    code: ws.app_code,
+    ts: ws.app_ts
+  }]);
   updateAdminClientCount();
 
   ws.on("close", () => {
     clients = clients.filter((client) => client !== ws);
+    clientCodes = clients.map(client => {
+      return {
+        address: req.socket.remoteAddress,
+        code: client.app_code,
+        ts: client.app_ts
+      }
+    });
     updateAdminClientCount();
   });
 
@@ -46,23 +73,31 @@ function handleIncomingMessage(ws, msg) {
       ws.isAdmin = true;
       break;
     case ACTIONS.DRAW:
-      handleDraw(data.code);
+      handleDraw(data.toDraw);
       break;
     default:
       console.warn("Ação desconhecida:", action);
   }
 }
 
-function handleDraw(confirmationCode) {
-  let participants = Array.from(wss.clients).filter(
+function handleDraw(toDraw) {
+  let admin = Array.from(wss.clients).filter(client => client.isAdmin)[0], 
+    participants = Array.from(wss.clients).filter(
     (client) => !client.isAdmin
-  );
-  const winner = participants[Math.floor(Math.random() * participants.length)];
-
+  ), winners = [];
+  
+  while (winners.length < toDraw){
+    winners.push(
+      participants[Math.floor(Math.random() * participants.length)].app_code
+    );
+  }
+  console.log(`Winners: ${toDraw}`);
+  console.log(winners);
   participants.forEach((client) => {
     let result = JSON.stringify({ status: "youlose" });
-    if (client === winner) {
-      result = JSON.stringify({ status: "youwin", code: confirmationCode });
+    if (winners.includes(client.app_code)) {
+      result = JSON.stringify({ status: "youwin", code: client.app_code });
+      console.log(`Código Sorteado: ${client.app_code}`);
     }
     client.send(result);
   });
@@ -79,6 +114,14 @@ function updateAdminClientCount() {
         JSON.stringify({
           action: ACTIONS.CLIENT_COUNT_UPDATE,
           count: clientCount,
+          codes: clientCodes
+        })
+      );
+    } else if (client.readyState === WebSocket.OPEN) {
+      client.send(
+        JSON.stringify({
+          status: ACTIONS.CLIENT_COUNT_UPDATE,
+          count: clientCount - 1
         })
       );
     }

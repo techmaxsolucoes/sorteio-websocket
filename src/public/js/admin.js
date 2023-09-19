@@ -19,6 +19,13 @@ function handleSocketMessage(event) {
 
   if (data.action === ACTIONS.CLIENT_COUNT_UPDATE) {
     updateClientCount(data.count);
+    updateParticipants(data.codes);
+  }
+  else if (data.action === ACTIONS.CLIENT_WON){
+    updateWinner(data.code);
+  }
+  else if (data.action === ACTIONS.CLIENT_LOST){
+    updateLoser(data.code);
   }
 }
 
@@ -35,15 +42,46 @@ function updateClientCount(count) {
   document.getElementById("clientCount").innerText = count;
 }
 
-function generateCode(length) {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let result = "";
+function updateParticipants(codes){
+  let code, html = '', i = 0;
 
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  html += `
+  <table>
+    <thead>
+      <th>Código</th>
+      <th>Endereço</th>
+      <th>Ultima Conexão</th>
+    </thead>
+    <tbody>
+  `;
+
+  for (; i < codes.length; i++){
+    code = codes[i];
+    if (typeof code.code === 'undefined') continue;
+    html += `
+      <tr id="cli${code.code}">
+        <td>${code.code}</td>
+        <td>${code.address}</td>
+        <td>${code.ts}</td>
+      <tr/>
+    `;
   }
 
-  return result;
+  html += `
+    </tbody>
+  </table>
+  `;
+
+
+  document.getElementById('participants').innerHTML = html;
+}
+
+function updateWinner(code) {
+  document.getElementById(`code${code}`).classList.add('win');
+}
+
+function updateLoser(code){
+  document.getElementsByClassName(`code${code}`).classList.add('lose');
 }
 
 connectWebSocket();
@@ -54,16 +92,15 @@ const messageDiv = document.getElementById("message");
 drawButton.addEventListener("click", handleDrawClick);
 
 function handleDrawClick() {
-  const confirmationCode = generateCode(4);
+  const toDraw = 2;
 
   if (socket.readyState === WebSocket.OPEN) {
     socket.send(
       JSON.stringify({
         action: ACTIONS.DRAW,
-        code: confirmationCode,
+        toDraw,
       })
     );
-    displayConfirmationCode(confirmationCode);
   } else {
     console.warn(
       "Websocket não está aberto. Aguarde e tente novamente em instantes."
@@ -77,3 +114,5 @@ function displayConfirmationCode(code) {
   messageDiv.classList.add("show-message");
   drawButton.innerText = "Sorteado!";
 }
+
+

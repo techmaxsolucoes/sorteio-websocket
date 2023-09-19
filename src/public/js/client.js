@@ -10,6 +10,9 @@ function handleServerMessage(event) {
   console.log("Mensagem recebida do servidor:", data);
 
   switch (data.status) {
+    case ACTIONS.CLIENT_COUNT_UPDATE:
+      updateClientCount(data.count);
+      break;
     case STATUS.WIN:
       setClientState("win", data.code);
       break;
@@ -47,4 +50,9 @@ function vibratePhone(timeMs) {
   if (navigator.vibrate) {
     navigator.vibrate(timeMs);
   }
+}
+
+
+function updateClientCount(count) {
+  document.getElementById("clientCount").innerText = count;
 }
