@@ -59,5 +59,5 @@ function vibratePhone(timeMs) {
 
 
 function updateClientCount(count) {
-  document.getElementById("clientCount").innerText = count;
+  document.getElementById("clientCount").innerText = count === 0 ? 'nenhum' : count;
 }
