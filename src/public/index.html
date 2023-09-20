@@ -19,20 +19,31 @@
     /></a>
 
     <!-- Boas Vindas -->
-    <h1>Olá, seja muito bem vindo!</h1>
-    <h3>Participe do sorteio da TechMax e concorra a brindes!</h3>
-    <h3>Para você <b>MAX</b>imizar o seu negócio! 🚀</h3>
-    <!-- Contador de Participantes -->
-    <hr>
-    <div>
-      Você está concorrendo com outros <span id="clientCount">0</span> participantes!
-      <br/>
-      <br/>
-      Aguarde em quanto todos se ajeitam!
+    <div id="boas_vindas" class="show-message">
+      <h1>Olá, seja muito bem vindo!</h1>
+      <h3>Participe do sorteio da TechMax e concorra a brindes!</h3>
+      <h3>Para você <b>MAX</b>imizar o seu negócio! 🚀</h3>
+      <!-- Contador de Participantes -->
+      <hr>
+      <div>
+        Você está concorrendo com outros <span id="clientCount">0</span> participantes!
+        <br/>
+        <br/>
+        Aguarde em quanto todos se ajeitam!
+      </div>
     </div>
 
-    <!-- Confetes -->
-    <div id="emitter"></div>
+    <!-- Você Ganhou -->
+    <div id="ganhou" class="hide-message">
+      <h3>Parabéns você foi sorteado!</h3>
+    </div>
+
+    <!-- Que Pena -->
+
+    <div id="que_pena" class="hide-message">
+      <h3>Woow, não foi desta vez...</h3>
+      <h3>Muito obrigado por participar!</h3>
+    </div>
 
     <!-- Mensagem -->
     <div id="message" class="message"></div>

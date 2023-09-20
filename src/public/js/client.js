@@ -28,6 +28,7 @@ function setClientState(state, code = "") {
   messageDiv.classList.toggle("hide-message", true);
   logo.classList.toggle("stop-spin", false);
   logo.classList.toggle("spin-animation", true);
+  document.getElementById('boas_vindas').classList.toggle('hide-message', true);
 
   setTimeout(() => {
     if (state === "win") {
@@ -41,6 +42,10 @@ function setClientState(state, code = "") {
 
     messageDiv.classList.toggle("show-message", state === "win");
     messageDiv.classList.toggle("hide-message", state !== "win");
+    document.getElementById('ganhou').classList.toggle('show-message', state === 'win');
+    document.getElementById('ganhou').classList.toggle('hide-message', state !== 'win');
+    document.getElementById('que_pena').classList.toggle('show-message', state !== 'win');
+    document.getElementById('que_pena').classList.toggle('hide-message', state === 'win');
     logo.classList.toggle("spin-animation", false);
     logo.classList.toggle("stop-spin", true);
   }, 4100);
