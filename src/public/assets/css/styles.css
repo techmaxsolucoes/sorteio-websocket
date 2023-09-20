@@ -4,8 +4,8 @@
 }
 
 body.main {
-  background-color: #043e4c;
-  color: #E0F2F6;
+  background-color: #0E2B32;
+  color: #BAD0D5;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,7 +27,7 @@ button {
   text-align: center;
   font-size: 3rem;
   font-weight: bold;
-  background-color: #E0F2F6;
+  background-color: #BAD0D5;
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
@@ -39,7 +39,7 @@ button {
 }
 
 .show-message {
-  color: #043e4c;
+  color: #0E2B32;
   transform: translateY(0%);
   opacity: 1;
 }
@@ -57,11 +57,11 @@ img#logo {
 }
 
 .win {
-  background-color: #075c1b !important;
+  background-color: #28C76F !important;
 }
 
 .lose {
-  background-color: #5c0707 !important;
+  background-color: #EE393A !important;
 }
 
 @keyframes spin {
@@ -89,27 +89,4 @@ img#logo {
 
 .stop-spin {
   animation: decelerate 1s forwards;
-}
-
-#emitter {
-  visibility: hidden;
-  background-color: #222;
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  top: 40%;
-  left: 0%;
-}
-.dot-container {
-  position:absolute;
-  left:0;
-  top:0;
-  overflow:visible;
-  z-index:5000;
-  pointer-events:none;
-}
-.dot {
-  position: absolute;
-  pointer-events: none; /*performance optimization*/
 }
