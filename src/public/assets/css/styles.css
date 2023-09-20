@@ -39,13 +39,13 @@ button {
 }
 
 .show-message {
-  color: #0E2B32;
+  display: block;
   transform: translateY(0%);
   opacity: 1;
 }
 
 .hide-message {
-  color: transparent;
+  display: none;
   transform: translateY(100%);
   opacity: 0;
 }
