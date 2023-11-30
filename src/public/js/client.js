@@ -1,10 +1,35 @@
 let socket = new WebSocket(WS_URL);
 const body = document.querySelector("body");
 const logo = document.getElementById("logo");
-const messageDiv = document.getElementById("message");
-
+const loadDiv = document.getElementById("loading");
+const codeDiv = document.getElementById("win-code")
 socket.addEventListener("message", handleServerMessage);
 
+function register() {
+  let greetingsP = document.getElementById('greetings')
+  let indicator = document.getElementById('qtd-indicator');
+
+  let joinCtaSection = document.querySelector('.join-cta');
+  let nameInput = document.getElementById("name");
+  let clientName = nameInput.value;
+  if (!clientName) {
+    alert('Você precisa preencher o seu nome para participar do sorteio!');
+    return;
+  }
+  let mobileFooter = document.getElementById('footer-mobile')
+  let btnJoin = document.querySelector('.join-btn.desktop')
+
+  joinCtaSection.style.display = 'none'
+  btnJoin.style.display = 'none'
+  mobileFooter.style.display = 'none'
+  nameInput.style.display = 'none'
+
+  indicator.classList.toggle("hide-message");
+  indicator.classList.toggle("show-message");
+
+  greetingsP.innerHTML = `Boa sorte, ${clientName}!`;
+  greetingsP.style.display = 'block';
+}
 function handleServerMessage(event) {
   const data = JSON.parse(event.data);
   console.log("Mensagem recebida do servidor:", data);
@@ -25,23 +50,22 @@ function handleServerMessage(event) {
 function setClientState(state, code = "") {
   // Início da animação
   body.className = "main";
-  messageDiv.classList.toggle("hide-message", true);
   logo.classList.toggle("stop-spin", false);
   logo.classList.toggle("spin-animation", true);
+  loadDiv.classList.toggle("show-message");
+  loadDiv.classList.toggle("hide-message")
   document.getElementById('boas_vindas').classList.toggle('hide-message', true);
 
   setTimeout(() => {
     if (state === "win") {
       body.classList.add("win");
-      messageDiv.innerText = code;
+      codeDiv.innerText = code;
       vibratePhone(1000);
     } else if (state === "lose") {
       body.classList.add("lose");
-      messageDiv.innerText = "";
     }
-
-    messageDiv.classList.toggle("show-message", state === "win");
-    messageDiv.classList.toggle("hide-message", state !== "win");
+    loadDiv.classList.toggle("show-message");
+    loadDiv.classList.toggle("hide-message");
     document.getElementById('ganhou').classList.toggle('show-message', state === 'win');
     document.getElementById('ganhou').classList.toggle('hide-message', state !== 'win');
     document.getElementById('que_pena').classList.toggle('show-message', state !== 'win');

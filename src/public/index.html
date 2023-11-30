@@ -3,53 +3,104 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sorteio TechMax Soluções</title>
+    <title>Sorteio | Joli</title>
     <!-- Estilos -->
     <link rel="stylesheet" href="public/assets/css/styles.css" />
   </head>
 
   <body class="main">
-    <!-- Logo -->
-    <a href="https://www.techmaxsolucoes.com.br/?origin=sorteio&campanha=acic"
+    <!-- Boas Vindas -->
+    <div id="loading" class="hide-message">
+      <img src="public/assets/images/loading.gif" alt="">
+      <span>Sorteando...</span>
+    </div>
+
+    <div id="boas_vindas" class="show-message">
+      <a href="https://www.joli.com.br/"
       target="_blank"
+      class="logo-img"
       ><img
         id="logo"
-        src="public/assets/images/logo-techmax.png"
-        alt="TechMax Soluções"
-    /></a>
+        src="public/assets/images/logo-joli.png"
+        alt="Logo da Joli"
+     style="max-width: 104px;"/></a>
 
-    <!-- Boas Vindas -->
-    <div id="boas_vindas" class="show-message">
-      <h1>Olá, seja muito bem vindo!</h1>
-      <h3>Participe do sorteio da TechMax e concorra :</h3>
+      <h1>Olá, seja muito bem vindo(a)!</h1>
+      <h3>Participe do Sorteio da Joli e concorra a esses prêmios maravilhosos:</h3>
 
-      <img src="public/assets/images/livros.png" style="max-width: 200px; "/>
+      <img src="public/assets/images/livros.png" draggable="false" class="books-img"/>
 
-      <h3>Para você <b>MAX</b>imizar o seu negócio! 🚀</h3>
+      <div class="join-cta">
+        <input id="name" placeholder="Insira seu nome!*" class="input-name" type="text">
+        <button onclick="register()" class="join-btn desktop">
+          Participar do sorteio ➔
+        </button>
+      </div>
+
+      <p id="greetings" style="display: none; font-weight: 600;"></p>
       <!-- Contador de Participantes -->
-      <hr>
-      <div>
-        Você está concorrendo com <span id="clientCount">nenhum</span> outro(s) participante(s)!
-        <br/>
-        <br/>
-        Aguarde em quanto todos se ajeitam!
+      <div id="qtd-indicator" class="hide-message qtd-indicator">
+        <img src="public/assets/images/info-icon.svg" alt="">
+        <span>Você está concorrendo com <span id="clientCount">0</span> participante(s)</span>
+      </div>
+      
+
+      <p class="footer-brand">Desenvolvido por <a target="_blank" href="https://techmaxsolucoes.com.br">TechMax Soluções.</a></p>
+    
+      <div id="footer-mobile">
+        <button onclick="register()" class="join-btn">
+          Participar do sorteio ➔
+        </button>
       </div>
     </div>
 
     <!-- Você Ganhou -->
-    <div id="ganhou" class="hide-message">
-      <h3>Parabéns você foi sorteado!</h3>
+    <div id="ganhou" class="win hide-message">
+      <a href="https://www.joli.com.br/"
+      target="_blank"
+      class="logo-img"
+      ><img
+        id="logo"
+        class="result"
+        src="public/assets/images/logo-black.svg"
+        alt="Logo da Joli"
+     style="max-width: 104px;"/></a>
+        <div class="wrapper-result">
+          <h3 class="result-title">Parabéns,<br />
+            você foi sorteado!
+          </h3>
+          <img src="public/assets/images/livro1.svg" style="max-width: 100px; margin: 0 auto 20px;" alt="">
+          <div id="win-code" class="">WEGED</div>
+          <p class="footer-result"><img src="public/assets/images/trophy-icon.svg" alt=""> Você é <span class="bold">01</span> de <span class="bold">100</span> participante(s)</p>
+        </div>
+
+        <p class="footer-brand result">Desenvolvido por TechMax Soluções</p>
     </div>
 
     <!-- Que Pena -->
 
     <div id="que_pena" class="hide-message">
-      <h3>Woow, não foi desta vez...</h3>
-      <h3>Muito obrigado por participar!</h3>
+      <a href="https://www.joli.com.br/"
+      target="_blank"
+      class="logo-img"
+      ><img
+        id="logo"
+        class="result"
+        src="public/assets/images/logo-joli.png"
+        alt="Logo da Joli"
+     style="max-width: 104px;"/></a>
+        <div class="wrapper-result">
+          <h3 class="result-title">Wow!<br />
+            Não foi desta vez...<br />
+            Obrigado por participar!
+          </h3>
+          <p class="footer-result"><img src="public/assets/images/yellow-infoicon.svg" alt=""> Total de <span class="bold">100</span> participante(s)</p>
+        </div>
+
+        <p class="footer-brand result">Desenvolvido por TechMax Soluções</p>
     </div>
 
     <!-- Mensagem -->
-    <div id="message" class="message"></div>
 
     <!-- Scripts -->
     <script src="public/js/config.js"></script>

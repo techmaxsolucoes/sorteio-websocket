@@ -51,6 +51,8 @@ function updateParticipants(codes){
       <th>Código</th>
       <th>Endereço</th>
       <th>Ultima Conexão</th>
+      <th>Ganhador</th>
+      <th>Prêmio sorteado</th>
     </thead>
     <tbody>
   `;
@@ -63,6 +65,8 @@ function updateParticipants(codes){
         <td>${code.code}</td>
         <td>${code.address}</td>
         <td>${code.ts}</td>
+        <td>Nome bonito</td>
+        <td>Livrão bom</td>
       <tr/>
     `;
   }
