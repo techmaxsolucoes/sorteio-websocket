@@ -51,8 +51,8 @@ function updateParticipants(codes){
       <th>Código</th>
       <th>Endereço</th>
       <th>Ultima Conexão</th>
-      <th>Ganhador</th>
-      <th>Prêmio sorteado</th>
+      <th>Sorteado?</th>
+      <th>Prêmio</th>
     </thead>
     <tbody>
   `;
@@ -65,8 +65,8 @@ function updateParticipants(codes){
         <td>${code.code}</td>
         <td>${code.address}</td>
         <td>${code.ts}</td>
-        <td>Nome bonito</td>
-        <td>Livrão bom</td>
+        <td>${code.sorteado || "Não"}</td>
+        <td>${code.premio ?  `public/assets/images/${code.premio}`  : ""}</td>
       <tr/>
     `;
   }
@@ -96,7 +96,10 @@ const messageDiv = document.getElementById("message");
 drawButton.addEventListener("click", handleDrawClick);
 
 function handleDrawClick() {
-  const toDraw = 2;
+  const toDraw = 5;
+
+  drawButton.setAttribute('disabled', 'disabled');
+  drawButton.innerText = 'Sorteando';
 
   if (socket.readyState === WebSocket.OPEN) {
     socket.send(
