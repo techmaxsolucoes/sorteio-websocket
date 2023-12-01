@@ -51,6 +51,7 @@ function updateParticipants(codes){
       <th>Código</th>
       <th>Endereço</th>
       <th>Ultima Conexão</th>
+      <th>Nome do Participante</th>
       <th>Sorteado?</th>
       <th>Prêmio</th>
     </thead>
@@ -65,6 +66,7 @@ function updateParticipants(codes){
         <td>${code.code}</td>
         <td>${code.address}</td>
         <td>${code.ts}</td>
+        <td>${code.nome || "Não Identificado"}</td>
         <td>${code.sorteado || "Não"}</td>
         <td>${code.premio ?  `public/assets/images/${code.premio}`  : ""}</td>
       <tr/>

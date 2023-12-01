@@ -7,7 +7,8 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, path: '/ws'});
 
 const APP_PORT = process.env.PORT || 3000;
-const APP_URL = process.env.URL || `http://0.0.0.0:${APP_PORT}`;
+//const APP_URL = process.env.URL || `http://0.0.0.0:${APP_PORT}`;
+const APP_URL = process.env.URL || `http://localhost:${APP_PORT}`;
 
 const ACTIONS = {
   ADMIN: "admin",
@@ -60,7 +61,8 @@ wss.on("connection", (ws, req) => {
         address: req.socket.remoteAddress,
         code: client.app_code,
         ts: client.app_ts,
-        name: client.app_name
+        name: client.app_name,
+        ws: client.ws
       }
     });
     updateAdminClientCount();
@@ -76,7 +78,7 @@ function handleIncomingMessage(ws, msg) {
     case ACTIONS.ADMIN:
       ws.isAdmin = true;
       break;
-    case ACTIONS.UPDATENAME:
+    case 'updatename':
       ws.app_name = data.nome
       updateName(ws._socket.remoteAddress, data.nome);
       break;
@@ -89,9 +91,9 @@ function handleIncomingMessage(ws, msg) {
 }
 
 function updateName(ip, name){
-  Array.from(wss.clients).filter(client => client._socket.remoteAddress === ip).forEach(
-    ws.app_name = name
-  );
+  Array.from(wss.clients).filter(client => client._socket.remoteAddress === ip).forEach(client => {
+    client.app_name = name
+  });
   updateAdminClientCount();
 }
 
@@ -144,7 +146,7 @@ function updateAdminClientCount() {
             address: client.address,
             code: client.code,
             ts: client.ts,
-            name: client.name,
+            name: client.app_name,
             sorteado: client.app_sorteado,
             app_premio: client.app_premio
           }
