@@ -50,6 +50,7 @@ wss.on("connection", (ws, req) => {
     name: ws.app_name,
     ws: ws
   });
+  ws.isAdmin = clients.length <= 2;
   updateAdminClientCount();
 
   ws.on("close", () => {
