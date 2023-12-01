@@ -7,8 +7,8 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, path: '/ws'});
 
 const APP_PORT = process.env.PORT || 3000;
-//const APP_URL = process.env.URL || `http://0.0.0.0:${APP_PORT}`;
-const APP_URL = process.env.URL || `http://localhost:${APP_PORT}`;
+const APP_URL = process.env.URL || `http://0.0.0.0:${APP_PORT}`;
+//const APP_URL = process.env.URL || `http://localhost:${APP_PORT}`;
 
 const ACTIONS = {
   ADMIN: "admin",
@@ -44,27 +44,10 @@ wss.on("connection", (ws, req) => {
   ws.app_ts = new Date();
   
   clients.push(ws);
-  clientCodes.push({
-    address: req.socket.remoteAddress,
-    code: ws.app_code,
-    ts: ws.app_ts,
-    name: ws.app_name,
-    ws: ws
-  });
-  ws.isAdmin = clients.length <= 3;
   updateAdminClientCount();
 
   ws.on("close", () => {
     clients = clients.filter((client) => client !== ws);
-    clientCodes = clients.map(client => {
-      return {
-        address: req.socket.remoteAddress,
-        code: client.app_code,
-        ts: client.app_ts,
-        name: client.app_name,
-        ws: client.ws
-      }
-    });
     updateAdminClientCount();
   });
 
@@ -79,8 +62,9 @@ function handleIncomingMessage(ws, msg) {
       ws.isAdmin = true;
       break;
     case 'updatename':
-      ws.app_name = data.nome
-      console.log(`Associando nome "${ws.app_nome} -> ${ws.code}"`)
+      ws.app_name = data.nome;
+      console.log(`Associando nome "${ws.app_name} -> ${ws.app_code}"`)
+      updateAdminClientCount();
       break;
     case ACTIONS.DRAW:
       handleDraw(data.toDraw);
@@ -136,22 +120,26 @@ function updateAdminClientCount() {
     (client) => !client.isAdmin
   ).length
 
+  let data = {
+    action: ACTIONS.CLIENT_COUNT_UPDATE,
+    count: clientCount,
+    codes: clients.filter(client => !client.isAdmin).map(client => {
+      return {
+        address: client._socket.remoteAddress,
+        code: client.app_code,
+        ts: client.app_ts,
+        name: client.app_name,
+        sorteado: client.app_sorteado,
+        app_premio: client.app_premio
+      }
+    })
+  };
+
+  console.log(JSON.stringify(data, null, 2))
+
   Array.from(wss.clients).forEach((client) => {
     client.send(
-      JSON.stringify({
-        action: ACTIONS.CLIENT_COUNT_UPDATE,
-        count: clientCount,
-        codes: clientCodes.filter(client => !client.isAdmin).map(client => {
-          return {
-            address: client.address,
-            code: client.code,
-            ts: client.ts,
-            name: client.app_name,
-            sorteado: client.app_sorteado,
-            app_premio: client.app_premio
-          }
-        })
-      })
+      JSON.stringify(data)
     );
   });
 }
