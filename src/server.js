@@ -7,7 +7,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, path: '/ws'});
 
 const APP_PORT = process.env.PORT || 3000;
-const APP_URL = process.env.URL || `http://localhost:${APP_PORT}`;
+const APP_URL = process.env.URL || `http://0.0.0.0:${APP_PORT}`;
 
 const ACTIONS = {
   ADMIN: "admin",
