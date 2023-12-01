@@ -1,4 +1,4 @@
-const WS_URL = "wss://sorteio.tmx.tec.br/ws";
+const WS_URL = "wss://joli.tmx.tec.br/ws";
 
 const STATUS = {
   WIN: "youwin",
