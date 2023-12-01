@@ -84,7 +84,7 @@ function updateName(ip, name){
 function handleDraw(toDraw) {
   let admin = Array.from(wss.clients).filter(client => client.isAdmin)[0], 
     participants = Array.from(wss.clients).filter(
-    (client) => !client.isAdmin
+    (client) => !client.isAdmin && client.app_name && client.app_name.length
   ), winners = [];
   
   let books = [
@@ -117,13 +117,13 @@ function handleDraw(toDraw) {
 
 function updateAdminClientCount() {
   const clientCount = Array.from(wss.clients).filter(
-    (client) => !client.isAdmin
+    (client) => !client.isAdmin && client.app_name && client.app_name.length
   ).length
 
   let data = {
     action: ACTIONS.CLIENT_COUNT_UPDATE,
     count: clientCount,
-    codes: clients.filter(client => !client.isAdmin).map(client => {
+    codes: clients.filter(client => client.app_name && client.app_name.length).map(client => {
       return {
         address: client._socket.remoteAddress,
         code: client.app_code,
