@@ -80,7 +80,7 @@ function handleIncomingMessage(ws, msg) {
       break;
     case 'updatename':
       ws.app_name = data.nome
-      updateName(ws._socket.remoteAddress, data.nome);
+      console.log(`Associando nome "${ws.app_nome} -> ${ws.code}"`)
       break;
     case ACTIONS.DRAW:
       handleDraw(data.toDraw);
