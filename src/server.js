@@ -95,19 +95,27 @@ function handleDraw(toDraw) {
     'livro-o-homem-mais-rico-da-babilonia.png'
   ];
 
-  while (winners.length < toDraw && winners.length <= participants.length){
-    winners.push(
-      participants[Math.floor(Math.random() * participants.length)].app_code
-    );
+  toDraw = 5;
+
+  let pick;
+
+  while (winners.length <= toDraw){
+    pick = participants[Math.floor(Math.random() * participants.length)].app_code;
+    if (!winners.includes(pick)) winners.push(pick);
   }
   console.log(`Winners: ${toDraw}`);
   console.log(winners);
   participants.forEach((client) => {
     let result = JSON.stringify({ status: "youlose" });
     if (winners.includes(client.app_code)) {
-      client.app_premio = books[winners.indexOf(client.app_code)];
+      client.app_premio = books.pop(0);
       client.app_sorteado = true;
-      result = JSON.stringify({ status: "youwin", code: client.app_code , "livro": client.app_premio});
+      result = JSON.stringify({ 
+        status: "youwin", 
+        code: client.app_code , 
+        "livro": client.app_premio,
+        "count": participants.length -1 
+      });
       console.log(`Código Sorteado: ${client.app_code}`);
     }
     client.send(result);
@@ -130,7 +138,7 @@ function updateAdminClientCount() {
         ts: client.app_ts,
         name: client.app_name,
         sorteado: client.app_sorteado,
-        app_premio: client.app_premio
+        premio: client.app_premio
       }
     })
   };

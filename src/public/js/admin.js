@@ -67,8 +67,8 @@ function updateParticipants(codes){
         <td>${code.address}</td>
         <td>${code.ts}</td>
         <td>${code.name || "Não Identificado"}</td>
-        <td>${code.sorteado || "Não"}</td>
-        <td>${code.premio ?  `public/assets/images/${code.premio}`  : ""}</td>
+        <td>${code.sorteado ?  "Sim" :"Não" }</td>
+        <td>${code.premio ?  `<img src="public/assets/images/${code.premio}" />`  : ""}</td>
       <tr/>
     `;
   }

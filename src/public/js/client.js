@@ -52,7 +52,7 @@ function handleServerMessage(event) {
       updateClientCount(data.count);
       break;
     case STATUS.WIN:
-      setClientState("win", data.code, data.livro);
+      setClientState("win", data.code, data.livro, data.count);
       break;
     case STATUS.LOSE:
       setClientState("lose");
@@ -60,7 +60,7 @@ function handleServerMessage(event) {
   }
 }
 
-function setClientState(state, code = "", livro = "") {
+function setClientState(state, code = "", livro = "", count = 0) {
   // Início da animação
   body.className = "main";
   logo.classList.toggle("stop-spin", false);
@@ -77,6 +77,7 @@ function setClientState(state, code = "", livro = "") {
     } else if (state === "lose") {
       body.classList.add("lose");
     }
+    updateClientCount(count);
     loadDiv.classList.toggle("show-message");
     loadDiv.classList.toggle("hide-message");
     document.getElementById('imglivro').setAttribute('src', `public/assets/images/${livro}`);
