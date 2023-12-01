@@ -99,6 +99,7 @@ function vibratePhone(timeMs) {
 function updateClientCount(count) {
   document.getElementById("clientCount").innerText = count === 0 ? 'nenhum' : count;
   document.getElementById("clientCount1").innerText = count === 0 ? 'nenhum' : count;
+  document.getElementById("clientCount2").innerText = count === 0 ? 'nenhum' : count;
 }
 
 window.document.onload = () => {
